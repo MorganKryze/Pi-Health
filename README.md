@@ -2,7 +2,7 @@
 
 > Add a short description of the project here.
 
-![screenshot](./src/assets/img/screenshot.png)
+![screenshot](./assets/img/screenshot.png)
 
 ## Getting Started
 
