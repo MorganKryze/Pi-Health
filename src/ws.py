@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from functools import wraps
 import asyncio
 import psutil
+import subprocess
 import os
 
 from . import main
@@ -143,7 +144,7 @@ class Websockets:
             delay (int): The delay between data sends. Defaults to 1 second.
         """
         while True:
-            cpu_temp = os.popen("vcgencmd measure_temp").readline()
+            cpu_temp = subprocess.check_output(["vcgencmd", "measure_temp"]).decode("utf-8")
             cpu_temp_float = float(cpu_temp.replace("temp=", "").replace("'C\n", ""))
             await websocket.send_text(str(round(cpu_temp_float, 2)))
             await asyncio.sleep(Websockets.refresh_rate)
