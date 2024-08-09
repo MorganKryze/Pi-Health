@@ -1,0 +1,15 @@
+services:
+  api:
+    build: .
+    container_name: pi_health
+    restart: always
+    env_file:
+      - .env
+    command: ["fastapi", "run", "/app/main.py", "--port", "${API_PORT_PRIVATE}"]
+    ports:
+      - "${API_PORT_PUBLIC}:${API_PORT_PRIVATE}"
+    volumes:
+      - ./src:/app
+      - ./.env:/config/.env
+    # Uncomment the following line to keep the container running for debugging
+    # command: ["tail", "-f", "/dev/null"]
