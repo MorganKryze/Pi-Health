@@ -1,4 +1,3 @@
-from asyncio import subprocess
 from typing import Callable, Coroutine
 from fastapi import WebSocket
 from dotenv import load_dotenv
@@ -144,17 +143,13 @@ class Websockets:
         """
         while True:
             try:
-                cpu_temp = psutil.sensors_temperatures()["coretemp"][0].current
+                temps = psutil.sensors_temperatures()
+                if not temps:
+                    await websocket.send_text("Cannot read any temperature")
+                cpu_temp = temps["coretemp"][0].current
                 await websocket.send_text("Test" + str(round(cpu_temp, 2)))
             except Exception as e:
-                await websocket.send_text("Error1: " + str(e))
-                try:
-                    cpu_temp = subprocess.check_output(["sensors"]).decode("utf-8")
-                    cpu_temp_float = float(cpu_temp.split("Core 0:")[1].split("°C")[0].strip())
-                    await websocket.send_text("Test" + str(round(cpu_temp_float, 2)))
-                except Exception as e:
-                    await websocket.send_text("Error2: " + str(e))
-                
+                await websocket.send_text("Error: " + str(e))
             await asyncio.sleep(Websockets.refresh_rate)
 
 
