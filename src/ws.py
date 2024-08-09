@@ -33,7 +33,6 @@ class Websockets:
     if load_variables() != 0:
         exit(1)
 
-
     @Utils.loading(
         "(General) Initializing Websockets...",
         "(General) Websockets initialized successfully.",
@@ -127,10 +126,13 @@ class Websockets:
             websocket (WebSocket): The WebSocket connection instance.
         """
         count = 0
-        while True:
-            await websocket.send_text(str(count))
-            count += 1
-            await asyncio.sleep(1)
+        try:
+            while True:
+                await websocket.send_text(str(count))
+                count += 1
+                await asyncio.sleep(1)
+        finally:
+            main.services_status["general"]["debug"] = False
 
     async def ws_internal_cpu_temperature(websocket: WebSocket, delay: int = 1):
         """
