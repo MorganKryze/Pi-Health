@@ -115,10 +115,8 @@ class Websockets:
                 await func(websocket)
             except Exception:
                 main.services_status[ws_category][ws_name] = False
-                await websocket.send_text("[WebSocket Closed]")
             finally:
                 main.services_status[ws_category][ws_name] = False
-                await websocket.send_text("[WebSocket Closed]")
 
         return wrapper
 
