@@ -2,7 +2,6 @@ services:
   api:
     build: .
     container_name: pi_health
-    privileged: true
     restart: always
     env_file:
       - .env
@@ -10,6 +9,7 @@ services:
     ports:
       - "${API_PORT_PUBLIC}:${API_PORT_PRIVATE}"
     volumes:
+      - /sys:/sys
       - ./src:/app
       - ./.env:/config/.env
     # Uncomment the following line to keep the container running for debugging

@@ -5,7 +5,6 @@ from functools import wraps
 import asyncio
 import psutil
 import subprocess
-import os
 
 from . import main
 from .utils import Utils
@@ -146,7 +145,7 @@ class Websockets:
         while True:
             cpu_temp = subprocess.check_output(["vcgencmd", "measure_temp"]).decode("utf-8")
             cpu_temp_float = float(cpu_temp.replace("temp=", "").replace("'C\n", ""))
-            await websocket.send_text(str(round(cpu_temp_float, 2)))
+            await websocket.send_text("Test" + str(round(cpu_temp_float, 2)))
             await asyncio.sleep(Websockets.refresh_rate)
 
     async def ws_internal_cpu_usage(websocket: WebSocket):
