@@ -32,6 +32,7 @@ class Websockets:
     Utils.clear_console()
     if load_variables() != 0:
         exit(1)
+    refresh_rate: int = int(Utils.read_variable("REFRESH_RATE"))
 
     @Utils.loading(
         "(General) Initializing Websockets...",
@@ -131,9 +132,9 @@ class Websockets:
         while True:
             await websocket.send_text(str(count))
             count += 1
-            await asyncio.sleep(1)
+            await asyncio.sleep(Websockets.refresh_rate)
 
-    async def ws_internal_cpu_temperature(websocket: WebSocket, delay: int = 1):
+    async def ws_internal_cpu_temperature(websocket: WebSocket):
         """
         A WebSocket endpoint for internal CPU temperature data. Placeholder for actual data retrieval.
 
@@ -142,13 +143,12 @@ class Websockets:
             delay (int): The delay between data sends. Defaults to 1 second.
         """
         while True:
-            # TODO: try on Rpi
             cpu_temp = os.popen("vcgencmd measure_temp").readline()
             cpu_temp_float = float(cpu_temp.replace("temp=", "").replace("'C\n", ""))
             await websocket.send_text(str(round(cpu_temp_float, 2)))
-            await asyncio.sleep(delay)
+            await asyncio.sleep(Websockets.refresh_rate)
 
-    async def ws_internal_cpu_usage(websocket: WebSocket, delay: int = 1):
+    async def ws_internal_cpu_usage(websocket: WebSocket):
         """
         A WebSocket endpoint for internal CPU usage data. Placeholder for actual data retrieval.
 
@@ -157,11 +157,10 @@ class Websockets:
             delay (int): The delay between data sends. Defaults to 1 second.
         """
         while True:
-            # TODO: try on Rpi
             await websocket.send_text(str(round(psutil.cpu_percent(interval=1), 2)))
-            await asyncio.sleep(delay)
+            await asyncio.sleep(Websockets.refresh_rate)
 
-    async def ws_internal_ram_usage(websocket: WebSocket, delay: int = 1):
+    async def ws_internal_ram_usage(websocket: WebSocket):
         """
         A WebSocket endpoint for internal RAM usage data. Placeholder for actual data retrieval.
 
@@ -170,6 +169,5 @@ class Websockets:
             delay (int): The delay between data sends. Defaults to 1 second.
         """
         while True:
-            # TODO: try on Rpi
             await websocket.send_text(str(round(psutil.virtual_memory().percent, 2)))
-            await asyncio.sleep(delay)
+            await asyncio.sleep(Websockets.refresh_rate)
