@@ -2,6 +2,7 @@ services:
   api:
     build: .
     container_name: pi_health
+    privileged: true
     restart: always
     env_file:
       - .env
