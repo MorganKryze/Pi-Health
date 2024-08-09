@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian:buster-slim
+FROM arm64v8/python:3.11-slim-buster
 
 RUN apt-get update && apt-get install -y vim libc6 libgcc1 libstdc++6 libcurl4-openssl-dev libssl-dev libjpeg-dev zlib1g-dev
 
