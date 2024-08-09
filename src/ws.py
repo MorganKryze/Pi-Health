@@ -115,6 +115,9 @@ class Websockets:
                 await func(websocket)
             except Exception:
                 main.services_status[ws_category][ws_name] = False
+            finally:
+                main.services_status[ws_category][ws_name] = False
+                await websocket.send_text("[WebSocket Closed]")
 
         return wrapper
 
@@ -126,13 +129,10 @@ class Websockets:
             websocket (WebSocket): The WebSocket connection instance.
         """
         count = 0
-        try:
-            while True:
-                await websocket.send_text(str(count))
-                count += 1
-                await asyncio.sleep(1)
-        finally:
-            main.services_status["general"]["debug"] = False
+        while True:
+            await websocket.send_text(str(count))
+            count += 1
+            await asyncio.sleep(1)
 
     async def ws_internal_cpu_temperature(websocket: WebSocket, delay: int = 1):
         """
