@@ -70,18 +70,18 @@ class Websockets:
         """
         try:
             Websockets.setup_websocket_service(
-                "internal_sensor",
-                "CPU_temperature",
+                "sensor",
+                "cpu_temp",
                 Websockets.ws_internal_cpu_temperature,
             )
             Websockets.setup_websocket_service(
-                "internal_sensor",
-                "CPU_usage",
+                "sensor",
+                "cpu_usage",
                 Websockets.ws_internal_cpu_usage,
             )
             Websockets.setup_websocket_service(
-                "internal_sensor",
-                "RAM_usage",
+                "sensor",
+                "ram_usage",
                 Websockets.ws_internal_ram_usage,
             )
 
