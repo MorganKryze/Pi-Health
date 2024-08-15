@@ -142,14 +142,11 @@ class Websockets:
             delay (int): The delay between data sends. Defaults to 1 second.
         """
         while True:
-            try:
-                temps = psutil.sensors_temperatures()
-                if not temps:
-                    await websocket.send_text("Cannot read any temperature")
-                cpu_temp = temps["cpu_thermal"][0].current
-                await websocket.send_text(str(round(cpu_temp, 2)))
-            except Exception as e:
-                await websocket.send_text("Error: " + str(e))
+            temps = psutil.sensors_temperatures()
+            if not temps:
+                await websocket.send_text("Cannot read any temperature")
+            cpu_temp = temps["cpu_thermal"][0].current
+            await websocket.send_text(str(round(cpu_temp, 2)))
             await asyncio.sleep(Websockets.refresh_rate)
 
 
