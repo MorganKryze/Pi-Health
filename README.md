@@ -1,6 +1,6 @@
-# Repository-Template
+# Pi-Health
 
-> Add a short description of the project here.
+> Lightweight health monitoring websocket server for Raspberry Pi (CPU % and °C, RAM %).
 
 ![screenshot](./assets/img/screenshot.png)
 
@@ -8,94 +8,76 @@
 
 ### Introduction
 
-Provide an introduction to the project. This section should be short and concise. It may include a link to an important [reference](https://example.com).
+This project is a lightweight health monitoring websocket server for Raspberry Pi. It provides the CPU usage in percentage and temperature in Celsius degrees, as well as the RAM usage in percentage through websocket channels.
 
 ### Prerequisites
 
-- Define tools and libraries that are required to run the project with the version number.
-- If available, provide a link to the installation guide.
+- Raspberry Pi (tested on zero/3/4/5)
+- Network connectivity
+- `git` installed
+- `docker` & `docker compose` installed
 
 ### Install
 
-Details here explicit instructions to install the project.
+First, we clone the project locally using `git`:
 
-Here are the info blocks available for github markdown:
+```bash
+git clone --depth=1 https://github.com/MorganKryze/Pi-Health.git
+```
 
 > [!NOTE]
-> Do not hesitate to add a note if necessary.
+> The `--depth=1` option is used to clone only the last commit of the repository, which is useful to save time and space.
+
+Move to the project directory:
+
+```bash
+cd Pi-Health
+```
+
+Open the `.env` file using an editor (`nano`, `vim`, ...) and set the `PORT` variable to the desired exposed port (default is `9876`).
+
+Then, we can pull the docker image the project using `docker compose`:
+
+```bash
+docker compose pull
+```
+
+When the image is pulled, we can build the project using `docker compose`:
+
+```bash
+docker compose up -d
+```
 
 > [!TIP]
-> Do not hesitate to add a tip if necessary.
-
-> [!WARNING]
-> Do not hesitate to add a warning if necessary.
-
-> [!IMPORTANT]
-> Do not hesitate to add an important note if necessary.
-
-> [!CAUTION]
-> Do not hesitate to add a caution if necessary.
-
-### Build & Run
-
-Detail here the instructions to build and run the project.
+> The `-d` option is used to run the container in the background (detached mode).
 
 ### Usage
 
-Detail here the instructions to use the project.
+Once the container is running, you can connect using a websocket client to the server with the following URL:
 
-### Troubleshooting
-
-Detail here the troubleshooting of the project.
-
-### Project structure
-
-Here are the most important files and directories of the project (you may ignore the other files and directories):
-
-```plaintext
-Repository-Template
-├── src
-│   ├── assets
-│   │   └── img
-│   │       └── screenshot.png
-│   └── project-code.sh
-├── .gitignore
-├── SECURITY
-├── CODE_OF_CONDUCT
-├── CONTRIBUTING
-├── LICENCE
-└── README.md
+```bash
+ws://<raspberry-pi-ip>:<port>/general/debug
 ```
 
-#### Small descriptives
+> [!NOTE]
+> You may want to access these information from a remote machine, so you will need to use an NGINX reverse proxy or a Cloudflare tunnel (for example) to expose the service to the internet.
 
-##### `src/`
+The available channels are:
 
-This directory contains the source code of the project.
-
-##### `src/assets/`
-
-This directory contains the assets of the project.
-
-##### Files
-
-If necessary, provide a description of the most important files of the project.
+- `general/debug`: simple incrementing debug channel
+- `sensor/cpu_usage`: CPU usage in percentage
+- `sensor/cpu_temp`: CPU temperature in Celsius degrees
+- `sensor/ram_usage`: RAM usage in percentage
 
 ## Supported platforms
 
-- Precise here the platforms that are supported by the project.
-- If available, provide a link to the installation guide.
-- If in testing, do not hesitate to mention it.
-
-## Supported languages
-
-- Precise here the languages that are supported by the project.
-- If necessary, precise if some languages needs to be checked.
+Built for arm Linux machines (Raspberry Pi). Will only need to change the functions that get the CPU and RAM usage to work on other platforms.
 
 ## Future improvements
 
-- Precise here the future improvements that are planned for the project.
-- ~~Imporvement done can be styled like this.~~
+- Add disk space usage
+- Add network connection status
+- Add a web interface to display the data
 
 ## Contributing
 
